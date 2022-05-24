@@ -56,7 +56,7 @@ public class DeliveryService {
 		delivery.setDeliveryMan(deliveryMan);
 		delivery.setDeliveryStatus(DeliveryStatus.ON_ROUTE);
 		delivery.setDeliveryTime(LocalDateTime.now().plusMinutes(1L));
-		deliveryMan.setAvaiable(false);
+		deliveryMan.setAvailable(false);
 		
 		deliveryManRepository.save(deliveryMan);
 		
@@ -66,22 +66,39 @@ public class DeliveryService {
 	}
 
 	public DeliveryMan findAvaiableDeliveryMan() {
-		return deliveryManRepository
+
+		log.info("Searching for a delivery man");
+
+		var deliveryMan = deliveryManRepository
 				.findAll()
 				.stream()
-				.filter(DeliveryMan::getAvaiable)
-				.findFirst()
-				.orElseThrow(() -> new RuntimeException("There is no delivery man avaiable"));
+				.filter(DeliveryMan::getAvailable)
+				.findFirst();
+
+		if (deliveryMan.isPresent()){
+			log.info("Found a delivery man available.");
+			return deliveryMan.get();
+		}
+
+		log.error("There is no available delivery man now.");
+
+		throw new RuntimeException("There is no available delivery man now.");
 	}
 
 	public void delivery(Delivery delivery) {
 		
 		delivery.setDeliveryStatus(DeliveryStatus.DELIVERED);
 			
-		delivery.getDeliveryMan().setAvaiable(true);
+		delivery.getDeliveryMan().setAvailable(true);
 			
 		deliveryManRepository.save(delivery.getDeliveryMan());
 			
 		deliveryRepository.save(delivery);
+
+		log.info("Request was delivered successfully.");
+	}
+
+	public void createDeliveryRequest(DeliveryRequest deliveryRequest){
+		deliveryProducer.createDeliveryRequest(deliveryRequest);
 	}
 }

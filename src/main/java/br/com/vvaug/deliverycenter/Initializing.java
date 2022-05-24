@@ -22,10 +22,9 @@ public class Initializing implements CommandLineRunner {
 		repo.deleteAll();
 		
 		repo.save(DeliveryMan.builder()
-				.avaiable(true)
+				.available(true)
 				.build());
 		
-		producer.send();
 	}
 
 }

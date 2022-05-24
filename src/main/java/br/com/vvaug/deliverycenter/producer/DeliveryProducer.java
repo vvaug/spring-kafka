@@ -18,15 +18,8 @@ public class DeliveryProducer {
 
 	public final KafkaTemplate<String, String> kafkaTemplate;
 		
-	public void send(){
+	public void createDeliveryRequest(DeliveryRequest deliveryRequest){
 		log.info("Sending message");
-		
-		var deliveryRequest = DeliveryRequest.builder()
-					.customerName("Victor")
-					.deliveryTax(BigDecimal.TEN)
-					.totalPrice(BigDecimal.valueOf(150.00))
-					.fullAddress("St Hollywood 564, XPTO - NY")
-					.build();
 		
 		var message = MapperUtils.toJson(deliveryRequest);
 		

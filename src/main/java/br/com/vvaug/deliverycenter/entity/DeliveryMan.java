@@ -1,5 +1,6 @@
 package br.com.vvaug.deliverycenter.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,9 +14,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 @Document(collection = "delivery_man")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DeliveryMan {
 
 	@Id
 	private String id;
-	private Boolean avaiable;
+	private Boolean available;
 }
