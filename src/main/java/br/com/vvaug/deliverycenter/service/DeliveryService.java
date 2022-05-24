@@ -50,7 +50,9 @@ public class DeliveryService {
 		var delivery = MapperUtils.toObject(request, Delivery.class);
 		
 		delivery.setDeliveryStatus(DeliveryStatus.PROCESSING);
-		
+
+		log.info("Searching for a delivery man for delivery: {}", delivery.getId());
+
 		var deliveryMan = findAvaiableDeliveryMan();
 		
 		delivery.setDeliveryMan(deliveryMan);
@@ -66,8 +68,6 @@ public class DeliveryService {
 	}
 
 	public DeliveryMan findAvaiableDeliveryMan() {
-
-		log.info("Searching for a delivery man");
 
 		var deliveryMan = deliveryManRepository
 				.findAll()
